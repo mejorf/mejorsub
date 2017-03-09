@@ -10,8 +10,8 @@ class SubDownloader
     @target = ARGV[0]
     @language = options[:language]
     if File.directory?(@target)
-      @ext = options[:extension]
-      @ext = '*/*.{avi,mp4,mkv,mpeg,flv,rm,wmv,m4v}' if @ext.nil?
+      @ext = options[:extension] || @ext = '*/*.{avi,mp4,mkv,mpeg,flv,rm,wmv,
+                                                 m4v}'
       @files = listfiles
       @files_and_hashes = gen_hashes
       downloadall
