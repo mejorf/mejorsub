@@ -5,11 +5,13 @@ require 'digest'
 
 # Generates an object that downloads subtitles from subdb
 class SubDownloader
-  def initialize(folder, language = 'pt')
-    @folder = folder
+  def initialize(ext, directory, language = 'pt')
+    @ext = ext
+    @directory = directory
     @language = language
-    @files = listfiles @folder
-    @files_and_hashes = get_hashes @files
+    @files = listfiles
+    @files_and_hashes = gen_hashes
+    downloadall
   end
 
   # translate the python function given by thesubdb api to get the hash of a
@@ -26,23 +28,23 @@ class SubDownloader
   end
 
   # generate an array of files in a directory
-  def listfiles(folder)
-    if folder[-1] != '/'
-      Dir[folder + '/*']
+  def listfiles
+    if @directory[-1] != '/'
+      Dir[@directory + '/*' + @ext]
     else
-      Dir[folder + '*']
+      Dir[@directory + '*' + @ext]
     end
   end
 
   # takes a file array and returns an array of hashes
-  def get_hashes(filelist)
+  def gen_hashes
     hashes = []
-    filelist.each do |file|
+    @files.each do |file|
       hashes << get_hash(file)
     end
     # make a dict with filenames as keys and hashes as values
     # (we need the filenames to save the srt files later)
-    Hash[filelist.zip hashes]
+    Hash[@files.zip hashes]
   end
 
   # downloads from individual hashes
@@ -62,11 +64,11 @@ class SubDownloader
   end
 
   def downloadall
+    puts @files_and_hashes
     @files_and_hashes.each do |_filename, hash|
       download hash
     end
   end
 end
 
-s = SubDownloader.new ARGV[0]
-s.downloadall
+SubDownloader.new ARGV[0], ARGV[1], ARGV[2]
