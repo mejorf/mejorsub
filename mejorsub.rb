@@ -6,12 +6,18 @@ require 'digest'
 # Generates an object that downloads subtitles from subdb
 class SubDownloader
   def initialize(ext, directory, language = 'pt')
-    @ext = ext
     @directory = directory
-    @language = language
-    @files = listfiles
-    @files_and_hashes = gen_hashes
-    downloadall
+    if File.directory?(@directory)
+      @ext = ext
+      @language = language
+      @files = listfiles
+      @files_and_hashes = gen_hashes
+      downloadall
+    elsif File.file?(@directory)
+      download(@directory)
+    else
+      abort('Argument must be a file or a directory path')
+    end
   end
 
   # translate the python function given by thesubdb api to get the hash of a
