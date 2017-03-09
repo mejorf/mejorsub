@@ -82,13 +82,13 @@ end
 
 options = {}
 opt_parser = OptionParser.new do |opt|
-  opt.banner = 'Usage: opt_parser [OPTIONS] file_or_dir_path'
+  opt.banner = 'Usage: mejorsub.rb [OPTIONS] file_or_dir_path'
   opt.on('-l arg', '--language=arg', 'select target language to the
          subtitle(s)') do |lang|
     options[:language] = lang
   end
   opt.on('-e arg', '--extension=arg', 'manually select the video(s)
-          extension(s)') do |ext|
+          extension(s) (RECOMMENDED') do |ext|
     options[:extension] = ext
   end
   opt.on('-h', '--help', 'help') do
@@ -97,4 +97,4 @@ opt_parser = OptionParser.new do |opt|
 end
 
 opt_parser.parse!
-SubDownloader.new(options)
+SubDownloader.new(options) if !ARGV.empty?
