@@ -5,10 +5,12 @@ require 'net/http'
 require 'digest'
 
 # Generates an object that downloads subtitles from subdb
-class SubDownloader
+class MejorSub
   def initialize(options)
     @target = ARGV[0]
-    @language = options[:language]
+    @language = options[:language] || @language = 'pt'
+    @count_sucess = 0
+    @count_fail = 0
     if File.directory?(@target)
       @ext = options[:extension] || @ext = '*/*.{avi,mp4,mkv,mpeg,flv,rm,wmv,
                                                  m4v}'
@@ -66,8 +68,14 @@ class SubDownloader
       download = http.send_request('GET', '/?action=download&hash=' + hash +
         "&language=#{@language}", nil, header)
       out = @files_and_hashes.key(hash).gsub(/\.[^.]*$/, '.srt')
-      File.open(out, 'wb') { |f| f.write(download.body) }
-      puts out + ' sucessfully downloaded'
+      unless download.body.empty?
+        File.open(out, 'wb') { |f| f.write(download.body) }
+        puts out + 'successfully downloaded'
+        @count_sucess += 1
+      else
+        puts out + 'failed'
+        @count_fail += 1
+      end
     rescue Exception => e
       puts e
     end
@@ -77,6 +85,9 @@ class SubDownloader
     @files_and_hashes.each do |_filename, hash|
       download hash
     end
+    puts "#{@count_sucess} file(s) successfully downloaded" unless
+                                                      @count_sucess < 1
+    puts "#{@count_fail} download(s) failed" unless @count_fail < 1
   end
 end
 
@@ -97,4 +108,4 @@ opt_parser = OptionParser.new do |opt|
 end
 
 opt_parser.parse!
-SubDownloader.new(options) if !ARGV.empty?
+MejorSub.new(options) if !ARGV.empty?

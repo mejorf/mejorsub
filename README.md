@@ -1,6 +1,6 @@
 ## MejorSub
 
-Yet another cmd subtitle downloader, written in Ruby, and using the subdb
+Yet another cmd subtitle downloader, written in ruby, and using the subdb
 api at http://thesubdb.com/api/. It's a single script that allows you to
 download subtitles for all videos stored in a given folder. You can also use it to download subs for a single video.
 
@@ -13,3 +13,5 @@ download subtitles for all videos stored in a given folder. You can also use it 
 * the output is always directed to the same directory as the input and with the same filename.
 * `l- --language` and `-e --extension` are optional arguments. If not defined, language defaults to pt and the program looks for the following extensions: avi, mp4, mkv, mpeg, flv, rm, wmv, m4v.
 * `-h` for help
+
+
