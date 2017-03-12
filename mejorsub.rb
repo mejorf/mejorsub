@@ -8,7 +8,11 @@ require 'digest'
 class MejorSub
   def initialize(options)
     @target = ARGV[0]
+<<<<<<< HEAD
     @language = options[:language] || @language = 'pt'
+=======
+    @language = options[:language]
+>>>>>>> c85b284052a9248a29bf1eae3dc2a6287b92c398
     @count_sucess = 0
     @count_fail = 0
     if File.directory?(@target)
