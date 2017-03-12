@@ -85,7 +85,7 @@ class MejorSub
     @files_and_hashes.each do |_filename, hash|
       download hash
     end
-    puts "#{@count_sucess} file(s) successfully downloaded" unless
+    puts "#{@count_sucess} file(s) downloaded successfully" unless
                                                       @count_sucess < 1
     puts "#{@count_fail} download(s) failed" unless @count_fail < 1
   end
